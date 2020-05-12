@@ -1,18 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class TicTacToeGame : MonoBehaviour
+﻿public class GameLogic
 {
-    // Start is called before the first frame update
-    void Start()
+    private int[] BoardState = new int[9];
+
+    public GameLogic()
     {
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 }
