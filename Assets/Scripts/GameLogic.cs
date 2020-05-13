@@ -1,37 +1,173 @@
 ﻿public class GameLogic
 {
-    private Player[] GameBoard = new Player[9];
+    private Player[,] GameBoard = new Player[3,3];
     public enum Player
     {
         empty = 0,
         circle = 1,
         cross = -1
     }
+    public enum WinningType
+    {
+        ROW,
+        COL,
+        DIAG,
+        DRAW
+    }
+    public enum Direction
+    {
+        TLtoBR,
+        TRtoBL
+    }
 
     public struct GameResult {
-        public readonly bool IsGameOver;
-        public readonly Player WinningPlayer;
+        public readonly bool Is_Game_Over;
+        public readonly Player Winning_Player;
+        public readonly WinningType Winning_Type;
+        public readonly int Winning_Pos;
 
-        public GameResult(bool isGameOver, Player winningPlayer)
+        public GameResult(bool isGameOver, Player winningPlayer, WinningType winningType, int winningPos)
         {
-            IsGameOver = isGameOver;
-            WinningPlayer = winningPlayer;
+            Is_Game_Over = isGameOver;
+            Winning_Player = winningPlayer;
+            Winning_Type = winningType;
+            Winning_Pos = winningPos;
         }
     }
 
-    public void Make_Move(Player player, int spot)
+    public void Make_Move(Player player, int row, int col)
     {
-        if (this.Check_Empty_Spot(spot))
-            GameBoard[spot] = player;
+        if (this.Check_Empty_Spot(row, col))
+            GameBoard[row, col] = player;
     }
 
     public GameResult Check_Game_Over()
     {
-        return new GameResult(false, Player.empty);
+        bool is_game_over = false;
+        Player winning_player = Player.empty;
+        WinningType winning_type = WinningType.ROW;
+        int winning_pos = -1;
+
+        for (int row = 0; row < 2; row++)
+        {
+            if (this.Check_Row_GameOver(row))
+            {
+                is_game_over = true;
+                winning_player = GameBoard[row, 0];
+                winning_type = WinningType.ROW;
+                winning_pos = row;
+            }
+        }
+
+        for (int col = 0; col < 2; col++)
+        {
+            if (this.Check_Col_GameOver(col))
+            {
+                is_game_over = true;
+                winning_player = GameBoard[0, col];
+                winning_type = WinningType.COL;
+                winning_pos = col;
+            }
+        }
+
+        if (this.Check_Diag_GameOver(Direction.TLtoBR))
+        {
+            is_game_over = true;
+            winning_player = GameBoard[0, 0];
+            winning_type = WinningType.DIAG;
+            winning_pos = 0;
+        }
+
+        if (this.Check_Diag_GameOver(Direction.TRtoBL))
+        {
+            is_game_over = true;
+            winning_player = GameBoard[0, 2];
+            winning_type = WinningType.DIAG;
+            winning_pos = 0;
+        }
+
+        if (is_game_over == false)
+        {
+            if (this.Check_Board_Filled())
+            {
+                is_game_over = true;
+                winning_player = Player.empty;
+                winning_type = WinningType.DRAW;
+                winning_pos = -1;
+            }
+        }
+
+        return new GameResult(is_game_over, winning_player, winning_type, winning_pos);
     }
 
-    private bool Check_Empty_Spot(int spot)
+    private bool Check_Empty_Spot(int row, int col)
     {
-        return GameBoard[spot] == Player.empty;
+        return GameBoard[row, col] == Player.empty;
+    }
+
+    private bool Check_Row_GameOver(int row)
+    {
+        for(int col = 0; col < 2; col++)
+        {
+            if ((GameBoard[row, col] != GameBoard[row, col+1]) || GameBoard[row, col] == Player.empty)
+                return false;
+        }
+
+        return true;
+    }
+
+    private bool Check_Col_GameOver(int col)
+    {
+        for (int row = 0; row < 2; row++)
+        {
+            if ((GameBoard[row, col] != GameBoard[row+1, col]) || GameBoard[row, col] == Player.empty)
+                return false;
+        }
+
+        return true;
+    }
+
+    private bool Check_Diag_GameOver(Direction direction)
+    {
+        int row;
+        int col;
+
+        if (direction == Direction.TLtoBR)
+        {
+            for (row = 0, col = 0; row < 2; row++, col++)
+            {
+                if ((GameBoard[row, col] != GameBoard[row + 1, col + 1]) || GameBoard[row, col] == Player.empty)
+                    return false;
+            }
+
+            return true;
+        }
+
+        else
+        {
+            for (row = 0, col = 2; row < 2; row++, col--)
+            {
+                if ((GameBoard[row, col] != GameBoard[row + 1, col - 1]) || GameBoard[row, col] == Player.empty)
+                    return false;
+            }
+
+            return true;
+        }
+    }
+
+    private bool Check_Board_Filled()
+    {
+        bool filled = true;
+
+        for (int row = 0; row < 2; row++)
+        {
+            for (int col = 0; col < 2; col++)
+            {
+                if (this.Check_Empty_Spot(row, col))
+                    filled = false;
+            }
+        }
+
+        return filled;
     }
 }
