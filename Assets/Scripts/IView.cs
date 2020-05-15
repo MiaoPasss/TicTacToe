@@ -1,6 +1,8 @@
-﻿public interface IView
+﻿using UnityEngine.Events;
+
+public interface IView
 {
-    int[] Ask_For_Next_Move();
+    void RegisterButtonListener(int row, int col, UnityAction listener);
     void Draw_Move(int row, int col);
     void Draw_GameOver(GameResultViewData game_result);
 }

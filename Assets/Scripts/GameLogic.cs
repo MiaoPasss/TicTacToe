@@ -113,7 +113,7 @@
         if (this.Check_Diag_GameOver(Direction.TRtoBL))
         {
             is_game_over = true;
-            winning_player = GameBoard[0, NumCol];
+            winning_player = GameBoard[0, NumCol - 1];
             winning_type = WinningType.DIAG;
             winning_pos = NumCol;
         }
@@ -137,7 +137,7 @@
         return GameBoard[row, col] == Player.empty;
     }
 
-    private bool Check_Row_GameOver(int row)
+    private bool Check_Col_GameOver(int row)
     {
         for(int col = 0; col < NumCol - 1; col++)
         {
@@ -148,7 +148,7 @@
         return true;
     }
 
-    private bool Check_Col_GameOver(int col)
+    private bool Check_Row_GameOver(int col)
     {
         for (int row = 0; row < NumRow - 1; row++)
         {
@@ -177,7 +177,7 @@
 
         else
         {
-            for (row = 0, col = NumCol; row < NumRow - 1; row++, col--)
+            for (row = 0, col = NumCol - 1; row < NumRow - 1; row++, col--)
             {
                 if ((GameBoard[row, col] != GameBoard[row + 1, col - 1]) || GameBoard[row, col] == Player.empty)
                     return false;
@@ -191,9 +191,9 @@
     {
         bool filled = true;
 
-        for (int row = 0; row < NumRow - 1; row++)
+        for (int row = 0; row < NumRow; row++)
         {
-            for (int col = 0; col < NumCol - 1; col++)
+            for (int col = 0; col < NumCol; col++)
             {
                 if (this.Check_Empty_Spot(row, col))
                     filled = false;

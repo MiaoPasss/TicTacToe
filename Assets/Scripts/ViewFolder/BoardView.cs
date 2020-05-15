@@ -4,38 +4,83 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BoardView : MonoBehaviour, IView
+public class BoardView : MonoBehaviour
 {
+    [SerializeField] public GameObject circle_win;
+    [SerializeField] public GameObject cross_win;
     [SerializeField] private PrefabInstantiator ButtonInstantiator;
-    private Button[] ButtonGroup = new Button[9];
+    private TileView[] ButtonGroup = new TileView[9];
 
-    public int[] Ask_For_Next_Move()
+    public void RegisterButtonListener(int row, int col, UnityAction listener)
     {
-        throw new System.NotImplementedException();
+        int button_index = 0;
+        button_index = col * 3 + row;
+        RegisterButtonClick(ButtonGroup[button_index].button, listener);
     }
 
     public void Draw_GameOver(GameResultViewData game_result)
-    {
-        
+    {   
+        if (game_result.Winning_Player == PlayerViewData.circle)
+        {
+            circle_win.SetActive(true);
+        }
+
+        else
+        {
+            cross_win.SetActive(true);
+        }
+
+        Debug.Log("Game Over!");
+        Debug.Log("Winner: " + game_result.Winning_Player.ToString("g"));
+        Debug.Log("WinningType: " + game_result.Winning_Type.ToString("g"));
+        Debug.Log("WinningPosition: " + game_result.Winning_Pos);
     }
 
-    public void Draw_Move(int row, int col)
+    public void Draw_Move(int row, int col, int current_player)
     {
-        
+        int button_index = row + col * 3;
+
+        if (current_player == -1)
+            ButtonGroup[button_index].ShowCross();
+
+        else if (current_player == 1)
+            ButtonGroup[button_index].ShowCircle();
+
+
+        string color;
+        switch (current_player)
+        {
+            case -1:
+                color = "Cross";
+                break;
+            case 1:
+                color = "Circle";
+                break;
+            default:
+                color = "None";
+                break;
+        }
+
+        Debug.Log(color + " play move at " + row + ',' + col);
     }
 
     // Start is called before the first frame update
-    private void Start()
+    public void Initialize()
     {
         for (int i = 0; i < 9; i++)
         {
-            ButtonGroup[i] = ButtonInstantiator.Instantiate().GetComponent<Button>();
+            ButtonGroup[i] = ButtonInstantiator.Instantiate().GetComponent<TileView>();
+
+            /*
             int button_index = i;
+
             UnityAction on_ith_button_clicked = () => 
             {
                 Debug.Log(button_index + "-th button clicked");
             };
+            
             RegisterButtonClick(ButtonGroup[i], on_ith_button_clicked);
+            */
         }
     }
 
