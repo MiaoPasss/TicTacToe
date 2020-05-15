@@ -85,7 +85,7 @@
             if (this.Check_Row_GameOver(row))
             {
                 is_game_over = true;
-                winning_player = GameBoard[row, 0];
+                winning_player = GameBoard[0, row];
                 winning_type = WinningType.ROW;
                 winning_pos = row;
             }
@@ -96,7 +96,7 @@
             if (this.Check_Col_GameOver(col))
             {
                 is_game_over = true;
-                winning_player = GameBoard[0, col];
+                winning_player = GameBoard[col, 0];
                 winning_type = WinningType.COL;
                 winning_pos = col;
             }

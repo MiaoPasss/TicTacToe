@@ -8,9 +8,10 @@ public class BoardView : MonoBehaviour
 {
     [SerializeField] public GameObject circle_win;
     [SerializeField] public GameObject cross_win;
+    [SerializeField] public GameObject draw_game;
     [SerializeField] private PrefabInstantiator ButtonInstantiator;
     private TileView[] ButtonGroup = new TileView[9];
-    [SerializeField] private Animator victory_animator;
+    // [SerializeField] private Animator victory_animator;
 
     public void RegisterButtonListener(int row, int col, UnityAction listener)
     {
@@ -23,19 +24,23 @@ public class BoardView : MonoBehaviour
     {
         GameObject winner;
 
-        if (game_result.Winning_Player == PlayerViewData.circle)
+        if (game_result.Winning_Type == WinningTypeViewData.DRAW)
+            winner = draw_game;
+
+        else if (game_result.Winning_Player == PlayerViewData.circle)
             winner = circle_win;
 
         else
             winner = cross_win;
 
-        /*
+        
         winner.SetActive(true);
+
         winner.transform.localScale = Vector3.zero;
         LeanTween.scale(winner, Vector3.one, 2);
-        */
+        
 
-        victory_animator.SetTrigger("Move To Victory");
+        // victory_animator.SetTrigger("Move To Victory");
 
         Debug.Log("Game Over!");
         Debug.Log("Winner: " + game_result.Winning_Player.ToString("g"));
