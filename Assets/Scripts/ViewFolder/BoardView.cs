@@ -19,16 +19,18 @@ public class BoardView : MonoBehaviour
     }
 
     public void Draw_GameOver(GameResultViewData game_result)
-    {   
+    {
+        GameObject winner;
+
         if (game_result.Winning_Player == PlayerViewData.circle)
-        {
-            circle_win.SetActive(true);
-        }
+            winner = circle_win;
 
         else
-        {
-            cross_win.SetActive(true);
-        }
+            winner = cross_win;
+
+        winner.SetActive(true);
+        winner.transform.localScale = Vector3.zero;
+        LeanTween.scale(winner, Vector3.one, 2);
 
         Debug.Log("Game Over!");
         Debug.Log("Winner: " + game_result.Winning_Player.ToString("g"));
