@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 8254117944584726192}
   - component: {fileID: 8254117944584726207}
   - component: {fileID: 5702764202785178840}
+  - component: {fileID: 5883722695547737023}
   m_Layer: 5
   m_Name: Board
   m_TagString: Untagged
@@ -476,6 +477,26 @@ MonoBehaviour:
   circle_win: {fileID: 69952125}
   cross_win: {fileID: 1996077402}
   ButtonInstantiator: {fileID: 1176741669313983746}
+  victory_animator: {fileID: 5883722695547737023}
+--- !u!95 &5883722695547737023
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8254117944584726205}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 39ab8b3e6942fde408ba6072ee131dc1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8254117944945043130
 GameObject:
   m_ObjectHideFlags: 0

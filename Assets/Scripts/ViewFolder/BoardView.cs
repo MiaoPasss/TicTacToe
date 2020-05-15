@@ -10,6 +10,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] public GameObject cross_win;
     [SerializeField] private PrefabInstantiator ButtonInstantiator;
     private TileView[] ButtonGroup = new TileView[9];
+    [SerializeField] private Animator victory_animator;
 
     public void RegisterButtonListener(int row, int col, UnityAction listener)
     {
@@ -28,9 +29,13 @@ public class BoardView : MonoBehaviour
         else
             winner = cross_win;
 
+        /*
         winner.SetActive(true);
         winner.transform.localScale = Vector3.zero;
         LeanTween.scale(winner, Vector3.one, 2);
+        */
+
+        victory_animator.SetTrigger("Move To Victory");
 
         Debug.Log("Game Over!");
         Debug.Log("Winner: " + game_result.Winning_Player.ToString("g"));
