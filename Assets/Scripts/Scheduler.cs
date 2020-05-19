@@ -41,23 +41,39 @@ public class Scheduler : MonoBehaviour
 
     private void Game_Play(int row, int col)
     {
-
-        if (game_logic.Make_Move(current_player, row, col) && !(game_over_flag))
+        if (game_over_flag)
         {
-            view.Draw_Move(row, col, (int)current_player);
-            game_result = game_logic.Check_Game_Over();
-            current_player = (GameLogic.Player)(-(int)current_player);
+            game_logic.Restart();
+            current_player = GameLogic.Player.circle;
+            game_over_flag = false;
+            game_result = new GameLogic.GameResult();
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    view.Draw_Move(i, j, 0);
+
+            view.Clear_GameOver();
         }
-        
-        if (game_result.Is_Game_Over && !(game_over_flag))
-        {
-            PlayerViewData player_view_data = (PlayerViewData)((int)game_result.Winning_Player);
-            WinningTypeViewData winning_type_view_data = (WinningTypeViewData)((int)game_result.Winning_Type);
-            int winning_pos = game_result.Winning_Pos;
 
-            GameResultViewData game_result_view_data = new GameResultViewData(player_view_data, winning_type_view_data, winning_pos);
-            view.Draw_GameOver(game_result_view_data);
-            game_over_flag = true;
+        else
+        {
+            if (game_logic.Make_Move(current_player, row, col) && !(game_over_flag))
+            {
+                view.Draw_Move(row, col, (int)current_player);
+                game_result = game_logic.Check_Game_Over();
+                current_player = (GameLogic.Player)(-(int)current_player);
+            }
+
+            if (game_result.Is_Game_Over && !(game_over_flag))
+            {
+                PlayerViewData player_view_data = (PlayerViewData)((int)game_result.Winning_Player);
+                WinningTypeViewData winning_type_view_data = (WinningTypeViewData)((int)game_result.Winning_Type);
+                int winning_pos = game_result.Winning_Pos;
+
+                GameResultViewData game_result_view_data = new GameResultViewData(player_view_data, winning_type_view_data, winning_pos);
+                view.Draw_GameOver(game_result_view_data);
+                game_over_flag = true;
+            }
         }
     }
 }

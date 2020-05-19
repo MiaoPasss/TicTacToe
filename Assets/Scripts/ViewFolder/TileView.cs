@@ -25,4 +25,10 @@ public class TileView : MonoBehaviour
     {
         circle.SetActive(true);
     }
+
+    public void Empty()
+    {
+        cross.SetActive(false);
+        circle.SetActive(false);
+    }
 }

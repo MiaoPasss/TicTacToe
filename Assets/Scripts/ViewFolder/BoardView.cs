@@ -9,6 +9,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] public GameObject circle_win;
     [SerializeField] public GameObject cross_win;
     [SerializeField] public GameObject draw_game;
+    [SerializeField] public GameObject re_message;
     [SerializeField] private PrefabInstantiator ButtonInstantiator;
     private TileView[] ButtonGroup = new TileView[9];
     // [SerializeField] private Animator victory_animator;
@@ -18,6 +19,14 @@ public class BoardView : MonoBehaviour
         int button_index = 0;
         button_index = col * 3 + row;
         RegisterButtonClick(ButtonGroup[button_index].button, listener);
+    }
+
+    public void Clear_GameOver()
+    {
+        circle_win.SetActive(false);
+        cross_win.SetActive(false);
+        draw_game.SetActive(false);
+        re_message.SetActive(false);
     }
 
     public void Draw_GameOver(GameResultViewData game_result)
@@ -35,6 +44,7 @@ public class BoardView : MonoBehaviour
 
         
         winner.SetActive(true);
+        re_message.SetActive(true);
 
         winner.transform.localScale = Vector3.zero;
         LeanTween.scale(winner, Vector3.one, 2);
@@ -57,6 +67,8 @@ public class BoardView : MonoBehaviour
 
         else if (current_player == 1)
             ButtonGroup[button_index].ShowCircle();
+        else
+            ButtonGroup[button_index].Empty();
 
 
         string color;
@@ -73,7 +85,8 @@ public class BoardView : MonoBehaviour
                 break;
         }
 
-        Debug.Log(color + " play move at " + row + ',' + col);
+        if (color != "None")
+            Debug.Log(color + " play move at " + row + ',' + col);
     }
 
     // Start is called before the first frame update

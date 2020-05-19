@@ -47,6 +47,17 @@
         }
     }
 
+    public void Restart()
+    {
+        for (int row = 0; row < NumRow; row++)
+        {
+            for (int col = 0; col < NumCol; col++)
+            {
+                GameBoard[row, col] = Player.empty;
+            }
+        }
+    }
+
     public struct GameResult {
         public readonly bool Is_Game_Over;
         public readonly Player Winning_Player;
